@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\modules\product\models\CategoryRecord */
+/* @var $model frontend\modules\product\models\ProductCategoryRecord */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Category Records', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Product Category Records', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="category-record-view">
+<div class="product-category-record-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

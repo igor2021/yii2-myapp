@@ -3,14 +3,17 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m151124_124035_init_product_prop_cover extends Migration
+class m151124_174649_init_product_prop_cover extends Migration
 {
     public function up()
     {
         $this->execute('
             CREATE TABLE `product_prop_cover` (
-                `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-                `name` VARCHAR(64) NOT NULL
+            	`product_id` INTEGER NOT NULL,
+            	`cover_id` INTEGER NOT NULL,
+            	PRIMARY KEY (`product_id`),
+                FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+            	FOREIGN KEY (`cover_id`) REFERENCES `product_cover`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         ');
     }
@@ -19,7 +22,7 @@ class m151124_124035_init_product_prop_cover extends Migration
     {
         $this->dropTable('product_prop_cover');
         
-        return false;
+        return true;
     }
 
     /*

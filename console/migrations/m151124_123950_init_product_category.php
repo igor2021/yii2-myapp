@@ -3,12 +3,12 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m151124_123950_init_product_prop_category extends Migration
+class m151124_123950_init_product_category extends Migration
 {
     public function up()
     {
         $this->execute('
-            CREATE TABLE `product_prop_category` (
+            CREATE TABLE `product_category` (
                 `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
                 `name` VARCHAR(64) NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -17,9 +17,9 @@ class m151124_123950_init_product_prop_category extends Migration
 
     public function down()
     {
-        $this->dropTable('product_prop_category');
+        $this->dropTable('product_category');
         
-        return false;
+        return true;
     }
 
     /*

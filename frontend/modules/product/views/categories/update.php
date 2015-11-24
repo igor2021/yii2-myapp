@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\modules\product\models\CategoryRecord */
+/* @var $model frontend\modules\product\models\ProductCategoryRecord */
 
-$this->title = 'Update Category Record: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Category Records', 'url' => ['index']];
+$this->title = 'Update Product Category Record: ' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Product Category Records', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="category-record-update">
+<div class="product-category-record-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

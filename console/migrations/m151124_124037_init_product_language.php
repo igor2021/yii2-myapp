@@ -3,12 +3,12 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m151124_124037_init_product_prop_language extends Migration
+class m151124_124037_init_product_language extends Migration
 {
     public function up()
     {
         $this->execute('
-            CREATE TABLE `product_prop_language` (
+            CREATE TABLE `product_language` (
                 `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
                 `name` VARCHAR(64) NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -17,9 +17,9 @@ class m151124_124037_init_product_prop_language extends Migration
 
     public function down()
     {
-        $this->dropTable('product_prop_language');
+        $this->dropTable('product_language');
         
-        return false;
+        return true;
     }
 
     /*

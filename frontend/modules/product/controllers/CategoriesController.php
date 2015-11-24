@@ -3,14 +3,14 @@
 namespace frontend\modules\product\controllers;
 
 use Yii;
-use frontend\modules\product\models\CategoryRecord;
-use frontend\modules\product\models\CategoryRecordSearch;
+use frontend\modules\product\models\ProductCategoryRecord;
+use frontend\modules\product\models\ProductCategoryRecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CategoriesController implements the CRUD actions for CategoryRecord model.
+ * CategoriesController implements the CRUD actions for ProductCategoryRecord model.
  */
 class CategoriesController extends Controller
 {
@@ -27,12 +27,12 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Lists all CategoryRecord models.
+     * Lists all ProductCategoryRecord models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CategoryRecordSearch();
+        $searchModel = new ProductCategoryRecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Displays a single CategoryRecord model.
+     * Displays a single ProductCategoryRecord model.
      * @param integer $id
      * @return mixed
      */
@@ -54,13 +54,13 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Creates a new CategoryRecord model.
+     * Creates a new ProductCategoryRecord model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new CategoryRecord();
+        $model = new ProductCategoryRecord();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -72,7 +72,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Updates an existing CategoryRecord model.
+     * Updates an existing ProductCategoryRecord model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -91,7 +91,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Deletes an existing CategoryRecord model.
+     * Deletes an existing ProductCategoryRecord model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -104,15 +104,15 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Finds the CategoryRecord model based on its primary key value.
+     * Finds the ProductCategoryRecord model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return CategoryRecord the loaded model
+     * @return ProductCategoryRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CategoryRecord::findOne($id)) !== null) {
+        if (($model = ProductCategoryRecord::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

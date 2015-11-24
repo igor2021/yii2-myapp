@@ -5,6 +5,7 @@ namespace frontend\modules\product\controllers;
 use Yii;
 use frontend\modules\product\models\ProductRecord;
 use frontend\modules\product\models\ProductRecordSearch;
+use frontend\modules\product\models\ProductCategoryRecord;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

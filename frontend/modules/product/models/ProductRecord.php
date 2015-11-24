@@ -3,6 +3,10 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use frontend\modules\product\models\ProductCategoryRecord;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
+use yii\widgets\ActiveField;
 
 /**
  * This is the model class for table "product".
@@ -14,8 +18,10 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Category $category
- * @property ProductProperty[] $productProperties
+ * @property ProductCategory $category
+ * @property ProductPropCover $productPropCover
+ * @property ProductPropLanguage $productPropLanguage
+ * @property ProductPropPaper $productPropPaper
  */
 class ProductRecord extends \yii\db\ActiveRecord
 {
@@ -60,14 +66,49 @@ class ProductRecord extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(ProductCategory::className(), ['id' => 'category_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductProperties()
+    public function getProductPropCover()
     {
-        return $this->hasMany(ProductProperty::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductPropCover::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductPropLanguage()
+    {
+        return $this->hasOne(ProductPropLanguage::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductPropPaper()
+    {
+        return $this->hasOne(ProductPropPaper::className(), ['product_id' => 'id']);
+    }
+    
+
+    /**
+     * @param items
+     * @param options
+     * @return array name-value pairs.
+     * For ActiveField->dropDownList()
+     */
+    public function dropDownListCategories()
+    {
+        $records = ProductCategoryRecord::find()->all();
+        $items = ArrayHelper::map($records,'id','name');
+        $options = [
+            'prompt' => 'Виберите категорию...'
+        ];
+        
+        return ['items' => $items, 'options' => $options];
+        
     }
 }

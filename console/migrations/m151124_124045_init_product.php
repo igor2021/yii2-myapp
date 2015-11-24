@@ -15,7 +15,7 @@ class m151124_124045_init_product extends Migration
                 `description` TEXT,
                 `created_at` INTEGER,
                 `updated_at` INTEGER,
-                FOREIGN KEY product_prop_category (`category_id`) REFERENCES `product_prop_cover`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+                FOREIGN KEY (`category_id`) REFERENCES `product_category`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         ');
     }
@@ -24,7 +24,7 @@ class m151124_124045_init_product extends Migration
     {        
         $this->dropTable('product');
         
-        return false;
+        return true;
     }
 
     /*

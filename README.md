@@ -69,43 +69,43 @@ return [
 
 ## 2. Подготовка таблиц
 
-Создадим миграцию "таблица свойств : категория"
+Создадим миграцию "таблица продукт : категория"
 
 
 ```
-$ ./yii migrate/create init_product_prop_category
+$ ./yii migrate/create init_product_category
 ```
 
-Создадим миграцию "таблица свойств : обложка"
+Создадим миграцию "таблица продукт : обложка"
 
 ```
-$ ./yii migrate/create init_product_prop_cover
+$ ./yii migrate/create init_product_cover
 ```
 
-Создадим миграцию "таблица свойств : бумага"
+Создадим миграцию "таблица продукт : бумага"
 
 ```
-$ ./yii migrate/create init_product_prop_paper
+$ ./yii migrate/create init_product_paper
 ```
 
-Создадим миграцию "таблица свойств : язык"
+Создадим миграцию "таблица продукт : язык"
 
 ```
-$ ./yii migrate/create init_product_prop_language
+$ ./yii migrate/create init_product_language
 ```
 
-Создадим миграцию "таблица товаров"
+Создадим миграцию "таблица продукт"
 
 ```
 $ ./yii migrate/create init_product
 ```
 
-Создадим таблицы связей "обложка", "бумага", "язык"
+Создадим таблицы связей-свойств продукта "обложка", "бумага", "язык"
 
 ```
-$ ./yii migrate/create init_product_cover
-$ ./yii migrate/create init_product_paper
-$ ./yii migrate/create init_product_language
+$ ./yii migrate/create init_product_prop_cover
+$ ./yii migrate/create init_product_prop_paper
+$ ./yii migrate/create init_product_prop_language
 ```
 
 После внесения изменений в созданные файлы выполним:
@@ -139,20 +139,32 @@ $ ./yii migrate
 ```
 
 
-## 5. Модель
+## 5. Модели
 
 Создадим модели (ActiveRecord) используя иструмент **Gii** (/gii/model)
 
-Создадим класс **CategoryRecord** по следующим параметрам:
+Создадим класс **ProductCategoryRecord** по следующим параметрам:
 
-* Table Name : product_prop_category
-* Model Class : ProductPropCategory
+* Table Name : product_category
+* Model Class : ProductCategoryRecord
 * Namespace : frontend\modules\product\models
 
-Создадим класс **PropertyRecord** по следующим параметрам:
+Создадим класс **ProductCoverRecord** по следующим параметрам:
 
-* Table Name : property
-* Model Class : PropertyRecord
+* Table Name : product_cover
+* Model Class : ProductCoverRecord
+* Namespace : frontend\modules\product\models
+
+Создадим класс **ProductPaperRecord** по следующим параметрам:
+
+* Table Name : product_paper
+* Model Class : ProductPaperRecord
+* Namespace : frontend\modules\product\models
+
+Создадим класс **ProductLanguageRecord** по следующим параметрам:
+
+* Table Name : product_language
+* Model Class : ProductLanguageRecord
 * Namespace : frontend\modules\product\models
 
 Создадим класс **ProductRecord** по следующим параметрам:
@@ -162,23 +174,37 @@ $ ./yii migrate
 * Namespace : frontend\modules\product\models
 
 
-## 6. Контроллер
+## 6. Контроллеры
 
 Создадим котроллер и прдеставление с раелизацией `CRUD` (Create-Read-Update-Delete) используя иструмент **Gii** (/gii/crud)
 
 Создадим класс **CategoriesController** по следующим параметрам:
 
-* Model Class : frontend\modules\product\models\CategoryRecord
-* Search Model Class : frontend\modules\product\models\CategoryRecordSearch
+* Model Class : frontend\modules\product\models\ProductCategoryRecord
+* Search Model Class : frontend\modules\product\models\ProductCategoryRecordSearch
 * Controller Class : frontend\modules\product\controllers\CategoriesController
 * View Path : @frontend/modules/product/views/categories
 
-Создадим класс **PropertiesController** по следующим параметрам:
+Создадим класс **CoversController** по следующим параметрам:
 
-* Model Class : frontend\modules\product\models\PropertyRecord
-* Search Model Class : frontend\modules\product\models\PropertyRecordSearch
-* Controller Class : frontend\modules\product\controllers\PropertiesController
-* View Path : @frontend/modules/product/views/properties
+* Model Class : frontend\modules\product\models\ProductCoverRecord
+* Search Model Class : frontend\modules\product\models\ProductCoverRecordSearch
+* Controller Class : frontend\modules\product\controllers\CoversController
+* View Path : @frontend/modules/product/views/covers
+
+Создадим класс **PapersController** по следующим параметрам:
+
+* Model Class : frontend\modules\product\models\ProductPaperRecord
+* Search Model Class : frontend\modules\product\models\ProductPaperRecordSearch
+* Controller Class : frontend\modules\product\controllers\PapersController
+* View Path : @frontend/modules/product/views/papers
+
+Создадим класс **LanguagesController** по следующим параметрам:
+
+* Model Class : frontend\modules\product\models\ProductLanguageRecord
+* Search Model Class : frontend\modules\product\models\ProductLanguageRecordSearch
+* Controller Class : frontend\modules\product\controllers\LanguagesController
+* View Path : @frontend/modules/product/views/languages
 
 Создадим класс **ProductsController** по следующим параметрам:
 
@@ -186,6 +212,48 @@ $ ./yii migrate
 * Search Model Class : frontend\modules\product\models\ProductRecordSearch
 * Controller Class : frontend\modules\product\controllers\ProductsController
 * View Path : @frontend/modules/product/views/products
+
+
+## 7. Код
+
+T.к. еще не знаком с реализацией I18N в Yii2, текст будет писаться, там где это нужно, русскими буквами.
+
+В файле `frontend/modules/product/models/ProductRecord.php` добавим метод:
+
+
+```
+    /**
+     * @param items
+     * @param options
+     * @return array name-value pairs.
+     * For ActiveField->dropDownList()
+     */
+    public function dropDownListCategories()
+    {
+        $records = ProductCategoryRecord::find()->all();
+        $items = ArrayHelper::map($records,'id','name');
+        $options = [
+            'prompt' => 'Виберите категорию...'
+        ];
+        
+        return ['items' => $items, 'options' => $options];
+        
+    }
+```
+
+Этот метод будет вфзыватся в представлении `frontend/modules/product/views/products/_form.php` при создании записи:
+
+
+```
+...
+use frontend\modules\product\models\ProductRecord;
+...
+    <?php 
+        $params = ProductRecord::dropDownListCategories();
+        echo $form->field($model, 'category_id')->dropDownList($params['items'], $params['options']);
+    ?>
+...
+```
 
 
 
