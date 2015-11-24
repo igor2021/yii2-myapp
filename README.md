@@ -223,9 +223,7 @@ T.к. еще не знаком с реализацией I18N в Yii2, текс�
 
 ```
     /**
-     * @param items
-     * @param options
-     * @return array name-value pairs.
+     * @return array(items, options) name-value/key-value pairs.
      * For ActiveField->dropDownList()
      */
     public function dropDownListCategories()
