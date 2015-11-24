@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use yii\helpers\Markdown;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
@@ -72,7 +73,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $file = __DIR__ . '/../../README.md';
+        $content = Markdown::process(file_get_contents($file), 'extra');
+        
+        return $this->renderContent($content);
     }
 
     /**
