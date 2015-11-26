@@ -31,7 +31,7 @@ class PapersController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {       
         $searchModel = new ProductPaperRecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

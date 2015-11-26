@@ -6,21 +6,23 @@ use Yii;
 use yii\web\MethodNotAllowedHttpException;
 
 /**
- * This is the model class for table "product_language".
+ * This is the model class for table "product_has_cover".
  *
  * @property integer $id
- * @property string $name
+ * @property integer $product_id
+ * @property integer $cover_id
  *
- * @property ProductPropLanguage[] $productPropLanguages
+ * @property Product $product
+ * @property ProductCover $cover
  */
-class ProductLanguageRecord extends \yii\db\ActiveRecord
+class ProductHasCoverRecord extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'product_language';
+        return 'product_has_cover';
     }
 
     /**
@@ -29,8 +31,9 @@ class ProductLanguageRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 64]
+            [['product_id', 'cover_id'], 'required'],
+            [['product_id', 'cover_id'], 'integer'],
+            [['product_id'], 'unique']
         ];
     }
 
@@ -41,16 +44,25 @@ class ProductLanguageRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Язык',
+            'product_id' => 'Product ID',
+            'cover_id' => 'Cover ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPropLanguages()
+    public function getProduct()
     {
-        return $this->hasMany(ProductPropLanguage::className(), ['language_id' => 'id']);
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCover()
+    {
+        return $this->hasOne(ProductCover::className(), ['id' => 'cover_id']);
     }
     
     /**

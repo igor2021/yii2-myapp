@@ -29,11 +29,36 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'category_id',
+            [
+                'attribute' => 'category',
+                'label' => 'Категория',
+                'value' => $model->category->name,
+            ],
             'name',
             'description:ntext',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'cover',
+                'label' => 'Обложка',
+                'value' => $model->cover->name,
+            ],
+            [
+                'attribute' => 'paper',
+                'label' => 'Бумага',
+                'value' => $model->paper->name,
+            ],
+            [
+                'attribute' => 'language',
+                'label' => 'Язык',
+                'value' => $model->language->name,
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' => ['datetime', 'Y-M-d H:m:s'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => ['datetime', 'Y-M-d H:m:s'],
+            ],
         ],
     ]) ?>
 

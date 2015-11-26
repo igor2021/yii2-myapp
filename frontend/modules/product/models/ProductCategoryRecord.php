@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use yii\web\MethodNotAllowedHttpException;
 
 /**
  * This is the model class for table "product_category".
@@ -38,7 +39,20 @@ class ProductCategoryRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Категория',
         ];
+    }
+    
+    /** 
+     * Saves the current record.
+     */
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ( Yii::$app->user->identity->username != 'admin' ) {
+            throw new MethodNotAllowedHttpException;
+        } else {
+            parent::save();
+            return true;
+        }
     }
 }

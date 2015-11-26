@@ -22,6 +22,17 @@ use frontend\modules\product\models\ProductRecord;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?php 
+        $params = ProductRecord::dropDownListCovers();
+        echo $form->field($model, 'cover_id')->dropDownList($params['items'], $params['options']);
+
+        $params = ProductRecord::dropDownListPapers();
+        echo $form->field($model, 'paper_id')->dropDownList($params['items'], $params['options']);
+
+        $params = ProductRecord::dropDownListLanguages();
+        echo $form->field($model, 'language_id')->dropDownList($params['items'], $params['options']);
+    ?>
+    
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

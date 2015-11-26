@@ -9,6 +9,7 @@ use yii\helpers\Html;
 $this->title = 'Create Product Record';
 $this->params['breadcrumbs'][] = ['label' => 'Product Records', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="product-record-create">
 

@@ -21,7 +21,7 @@ class m151124_174705_init_product_has_language extends Migration
 
     public function down()
     {
-        $this->dropTable('product_prop_language');
+        $this->dropTable('product_has_language');
 
         return true;
     }

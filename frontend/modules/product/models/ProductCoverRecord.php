@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use yii\web\MethodNotAllowedHttpException;
 
 /**
  * This is the model class for table "product_cover".
@@ -41,7 +42,7 @@ class ProductCoverRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Обложка',
         ];
     }
 
@@ -59,5 +60,18 @@ class ProductCoverRecord extends \yii\db\ActiveRecord
     public function getProductPropCovers()
     {
         return $this->hasMany(ProductPropCover::className(), ['cover_id' => 'id']);
+    }
+    
+    /**
+     * Saves the current record.
+     */
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ( Yii::$app->user->identity->username != 'admin' ) {
+            throw new MethodNotAllowedHttpException;
+        } else {
+            parent::save();
+            return true;
+        }
     }
 }

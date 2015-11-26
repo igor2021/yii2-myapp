@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m151124_174649_init_product_prop_cover extends Migration
+class m151124_174649_init_product_has_cover extends Migration
 {
     public function up()
     {
@@ -21,7 +21,7 @@ class m151124_174649_init_product_prop_cover extends Migration
 
     public function down()
     {
-        $this->dropTable('product_prop_cover');
+        $this->dropTable('product_has_cover');
         
         return true;
     }

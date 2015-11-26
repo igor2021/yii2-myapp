@@ -21,7 +21,7 @@ class m151124_174657_init_product_has_paper extends Migration
 
     public function down()
     {
-        $this->dropTable('product_prop_paper');
+        $this->dropTable('product_has_paper');
 
         return true;
     }

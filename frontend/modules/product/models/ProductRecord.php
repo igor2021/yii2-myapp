@@ -3,10 +3,10 @@
 namespace frontend\modules\product\models;
 
 use Yii;
-use frontend\modules\product\models\ProductCategoryRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\widgets\ActiveField;
+use yii\web\MethodNotAllowedHttpException;
 
 /**
  * This is the model class for table "product".
@@ -19,12 +19,38 @@ use yii\widgets\ActiveField;
  * @property integer $updated_at
  *
  * @property ProductCategory $category
- * @property ProductPropCover $productPropCover
- * @property ProductPropLanguage $productPropLanguage
- * @property ProductPropPaper $productPropPaper
+ * @property ProductCover $cover
+ * @property ProductPaper $paper
+ * @property ProductLanguage $language
+ * 
+ * @property ProductHasCover $productHasCover
+ * @property ProductHasLanguage $productHasLanguage
+ * @property ProductHasPaper $productHasPaper
+ * 
  */
 class ProductRecord extends \yii\db\ActiveRecord
 {
+    /** 
+     * @var integer cover_id 
+     * @var integer parer_id
+     * @var integer language_id
+     * For use in, for example, ActiveForm->field()
+     */
+    public $cover_id;
+    public $paper_id;
+    public $language_id;
+    
+    /**
+     * {@inheritDoc}
+     * @see \yii\base\Component::behaviors()  
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => \yii\behaviors\TimestampBehavior::className(),
+        ];
+    }
+    
     /**
      * @inheritdoc
      */
@@ -42,7 +68,7 @@ class ProductRecord extends \yii\db\ActiveRecord
             [['category_id', 'name'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 64]
+            [['name'], 'string', 'max' => 64],
         ];
     }
 
@@ -53,11 +79,14 @@ class ProductRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category_id' => 'Category ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'category_id' => 'Категория',
+            'name' => 'Продукт',
+            'description' => 'Описание',
+            'created_at' => 'Создано',
+            'updated_at' => 'Обновлено',
+            'cover_id' => 'Обложка',
+            'paper_id' => 'Бумага',
+            'language_id' => 'Язык',
         ];
     }
 
@@ -66,37 +95,64 @@ class ProductRecord extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(ProductCategory::className(), ['id' => 'category_id']);
+        return $this->hasOne(ProductCategoryRecord::className(), ['id' => 'category_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPropCover()
+    public function getCover()
     {
-        return $this->hasOne(ProductPropCover::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductCoverRecord::className(), ['id' => 'cover_id'])
+            ->viaTable('product_has_cover', ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPropLanguage()
+    public function getPaper()
     {
-        return $this->hasOne(ProductPropLanguage::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductPropPaper()
-    {
-        return $this->hasOne(ProductPropPaper::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductPaperRecord::className(), ['id' => 'paper_id'])
+            ->viaTable('product_has_paper', ['product_id' => 'id']);
     }
     
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLanguage()
+    {
+        return $this->hasOne(ProductLanguageRecord::className(), ['id' => 'language_id'])
+        ->viaTable('product_has_language', ['product_id' => 'id']);
+    }
+    
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductHasCover()
+    {
+        return $this->hasOne(ProductHasCoverRecord::className(), ['product_id' => 'id']);
+    }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductHasLanguage()
+    {
+        return $this->hasOne(ProductHasLanguageRecord::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductHasPaper()
+    {
+        return $this->hasOne(ProductHasPaperRecord::className(), ['product_id' => 'id']);
+    }
+    
+    /**
      * @return array(items, options) name-value/key-value pairs.
-     * For ActiveField->dropDownList()
+     * For use in ActiveField->dropDownList()
      */
     public function dropDownListCategories()
     {
@@ -107,6 +163,63 @@ class ProductRecord extends \yii\db\ActiveRecord
         ];
         
         return ['items' => $items, 'options' => $options];
-        
+    }
+    
+    /**
+     * @return array(items, options) name-value/key-value pairs.
+     * For use in ActiveField->dropDownList()
+     */
+    public function dropDownListCovers()
+    {
+        $records = ProductCoverRecord::find()->all();
+        $items = ArrayHelper::map($records,'id','name');
+        $options = [
+            'prompt' => 'Виберите обложку...'
+        ];
+    
+        return ['items' => $items, 'options' => $options];
+    }
+    
+    /**
+     * @return array(items, options) name-value/key-value pairs.
+     * For use in ActiveField->dropDownList()
+     */
+    public function dropDownListPapers()
+    {
+        $records = ProductPaperRecord::find()->all();
+        $items = ArrayHelper::map($records,'id','name');
+        $options = [
+            'prompt' => 'Виберите бумагу...'
+        ];
+    
+        return ['items' => $items, 'options' => $options];
+    }
+    
+    /**
+     * @return array(items, options) name-value/key-value pairs.
+     * For ActiveField->dropDownList()
+     */
+    public function dropDownListLanguages()
+    {
+        $records = ProductLanguageRecord::find()->all();
+        $items = ArrayHelper::map($records,'id','name');
+        $options = [
+            'prompt' => 'Виберите язык...'
+        ];
+    
+        return ['items' => $items, 'options' => $options];
+    }
+    
+    /**
+     * Saves the current record.
+     */
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ( Yii::$app->user->identity->username != 'admin' ) {
+            throw new MethodNotAllowedHttpException;
+        } else {
+            parent::save();
+            return true;
+        }
     }
 }
