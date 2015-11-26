@@ -222,4 +222,18 @@ class ProductRecord extends \yii\db\ActiveRecord
             return true;
         }
     }
+    
+    /**
+     * Deletes the table row corresponding to this active record.
+     *
+     */
+    public function delete()
+    {
+        if ( Yii::$app->user->identity->username != 'admin' ) {
+            throw new MethodNotAllowedHttpException;
+        } else {
+            parent::delete();
+            return true;
+        }
+    }
 }
