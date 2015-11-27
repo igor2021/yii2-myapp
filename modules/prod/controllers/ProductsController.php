@@ -8,9 +8,9 @@ use modules\prod\models\ProductSearch;
 use modules\prod\models\ProductHasCover;
 use modules\prod\models\ProductHasPaper;
 use modules\prod\models\ProductHasLanguage;
-
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
@@ -21,6 +21,19 @@ class ProductsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view'],
+                        'allow' => true,
+                    ],
+                    [
+                        'roles' => ['admin'],
+                        'allow' => true,
+                    ],
+                ], 
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

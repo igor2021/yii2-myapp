@@ -8,22 +8,7 @@
 * Страница "Язык": [Перейти на страницу](/prod/languages)
 
 
-## 2. Подготовка таблиц
-
-
-```
-./yii migrate/create init_prod_category
-./yii migrate/create init_prod_cover
-./yii migrate/create init_prod_paper
-./yii migrate/create init_prod_language
-./yii migrate/create init_prod_product
-./yii migrate/create init_prod_product_has_cover
-./yii migrate/create init_prod_product_has_paper
-./yii migrate/create init_prod_product_has_language
-./yii migrate
-```
-
-## 3. Псевдонимы
+## 2. Псевдонимы
 
 `/common/config/bootstrap.php`:
 
@@ -33,7 +18,57 @@
 Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 ```
 
-## 4. Модуль
+# 3. Role Based Access Control (RBAC) 
+
+`common/config/main.php`:
+
+```
+	'authManager' => [
+		'class' => 'yii\rbac\DbManager',
+		'defaultRoles' => ['guest'],
+	],	
+```
+
+```
+./yii migrate --migrationPath='@yii/rbac/migrations'
+```
+
+
+
+
+
+
+## 4.1. Подготовка таблиц
+
+
+```
+./yii migrate/create --migrationPath=@modules/prod/migrations/auth create_auth_roles
+./yii migrate --migrationPath=@modules/prod/migrations/auth
+```
+
+```
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_category
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_cover
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_paper
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_language
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_product
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_product_has_cover
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_product_has_paper
+./yii migrate/create --migrationPath=@modules/prod/migrations init_prod_product_has_language
+./yii migrate --migrationPath=@modules/prod/migrations
+```
+
+## 4.2. Прочие миграции
+
+
+```
+./yii migrate/create --migrationPath=@modules/prod/migrations extend_prod_product
+./yii migrate --migrationPath=@modules/prod/migrations
+```
+
+
+
+## 5. Модуль
 
 `http://localhost/gii/module`
 
@@ -54,7 +89,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
     ...
 ```
 
-## 5. Модели
+## 6. Модели
 
 `http://localhost/gii/model`
 
@@ -146,7 +181,62 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 * View Path : @modules/prod/views/products
 ```
 
+## 7. AccessControl
 
+`modules/prod/controllers/CategoriesController.php`,
+`modules/prod/controllers/CoversController.php`,
+`modules/prod/controllers/LanguagesController.php`,
+`modules/prod/controllers/PapersController.php`,
+```
+use yii\filters\AccessControl;
+
+...
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view'],
+                        'allow' => true,
+                    ],
+                    [
+                        'roles' => ['admin'],
+                        'allow' => true,
+                    ],
+                ], 
+            ],
+			...
+```
+
+`/modules/prod/controllers/ProductsController.php`,
+
+
+```
+use yii\filters\AccessControl;
+
+...
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view'],
+                        'allow' => true,
+                    ],
+                    [
+                        'roles' => ['admin'],
+                        'allow' => true,
+                    ],
+                ], 
+            ],
+            ...
+```
 
 
 
