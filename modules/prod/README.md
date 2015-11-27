@@ -8,7 +8,36 @@
 * Страница "Язык": [Перейти на страницу](/prod/languages)
 
 
-## 2. Псевдонимы
+## 2. Basic Configuration
+
+* `common/config/main.php`
+
+```
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'],
+        ],
+```
+
+* `common/config/main-local.php`
+
+```  
+return [
+    'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=myapp',
+            'username' => 'myapp',
+            'password' => '<password>',
+            'charset' => 'utf8',
+        ],
+```
+
+## 3. Псевдонимы
 
 `/common/config/bootstrap.php`:
 
@@ -18,7 +47,7 @@
 Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 ```
 
-# 3. Role Based Access Control (RBAC) 
+## 4. Role Based Access Control (RBAC) 
 
 `common/config/main.php`:
 
@@ -38,7 +67,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 
 
 
-## 4.1. Подготовка таблиц
+## 5.1. Подготовка таблиц
 
 
 ```
@@ -58,7 +87,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 ./yii migrate --migrationPath=@modules/prod/migrations
 ```
 
-## 4.2. Прочие миграции
+## 4.5. Прочие миграции
 
 
 ```
@@ -68,7 +97,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 
 
 
-## 5. Модуль
+## 6. Модуль
 
 `http://localhost/gii/module`
 
@@ -80,16 +109,14 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 
 ```
 <?php
-    ...
     'modules' => [
         'prod' => [
             'class' => 'modules\prod\Module',
         ],
     ],
-    ...
 ```
 
-## 6. Модели
+## 7. Модели
 
 `http://localhost/gii/model`
 
@@ -141,7 +168,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 * Namespace : modules\product\models
 ```
 
-## 6. Контроллеры
+## 7. Контроллеры
 
 `http://localhost/gii/crud`
 
@@ -181,16 +208,17 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 * View Path : @modules/prod/views/products
 ```
 
-## 7. AccessControl
+## 8. AccessControl
 
-`modules/prod/controllers/CategoriesController.php`,
-`modules/prod/controllers/CoversController.php`,
-`modules/prod/controllers/LanguagesController.php`,
-`modules/prod/controllers/PapersController.php`,
+* `modules/prod/controllers/CategoriesController.php`,
+* `modules/prod/controllers/CoversController.php`,
+* `modules/prod/controllers/LanguagesController.php`,
+* `modules/prod/controllers/PapersController.php`,
+
 ```
 use yii\filters\AccessControl;
 
-...
+......
 
     public function behaviors()
     {
@@ -208,7 +236,6 @@ use yii\filters\AccessControl;
                     ],
                 ], 
             ],
-			...
 ```
 
 `/modules/prod/controllers/ProductsController.php`,
@@ -217,7 +244,7 @@ use yii\filters\AccessControl;
 ```
 use yii\filters\AccessControl;
 
-...
+......
 
     public function behaviors()
     {
@@ -235,7 +262,6 @@ use yii\filters\AccessControl;
                     ],
                 ], 
             ],
-            ...
 ```
 
 
