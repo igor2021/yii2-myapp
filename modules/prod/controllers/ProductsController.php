@@ -134,6 +134,9 @@ class ProductsController extends Controller
     {
         $model = $this->findModel($id);
 
+        if ($model->load(Yii::$app->request->post()) ) {
+            $transaction = Yii::$app->db->beginTransaction();
+            
             try {
                 // Product
                 $model->save();
@@ -165,6 +168,11 @@ class ProductsController extends Controller
         
                 $transaction->commit();
             } catch (Exception $e) {
+                $transaction->rollBack();
+            }
+            
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
