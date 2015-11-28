@@ -14,8 +14,6 @@ use modules\prod\models\Product;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php 
-        var_dump($model);
-        die;
         $params = Product::dropDownListCategories();
         echo $form->field($model, 'category_id')->dropDownList($params['items'], $params['options']);
     ?>
@@ -26,13 +24,13 @@ use modules\prod\models\Product;
 
     <?php 
         $params = Product::dropDownListCovers();
-        echo $form->field($model, 'cover_id')->dropDownList($params['items'], $params['options']);
+        echo $form->field($model, 'cover')->dropDownList($params['items'], $params['options']);
 
         $params = Product::dropDownListPapers();
-        echo $form->field($model, 'paper_id')->dropDownList($params['items'], $params['options']);
+        echo $form->field($model, 'paper')->dropDownList($params['items'], $params['options']);
 
         $params = Product::dropDownListLanguages();
-        echo $form->field($model, 'language_id')->dropDownList($params['items'], $params['options']);
+        echo $form->field($model, 'language')->dropDownList($params['items'], $params['options']);
     ?>
     
     <div class="form-group">

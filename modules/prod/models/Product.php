@@ -15,6 +15,8 @@ use yii\widgets\ActiveField;
  * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $created_by
+ * @property integer $updated_by
  *
  * @property Category $category
  * @property Cover $cover
@@ -26,16 +28,6 @@ use yii\widgets\ActiveField;
  */
 class Product extends \yii\db\ActiveRecord
 {
-	/**
-	 * @var integer cover_id
-	 * @var integer parer_id
-	 * @var integer language_id
-	 * For use in, for example, ActiveForm->field()
-	 */
-	public $cover_id;
-	public $paper_id;
-	public $language_id;
-    
     /**
      * @inheritdoc
      */
@@ -64,7 +56,7 @@ class Product extends \yii\db\ActiveRecord
             [['category_id', 'name'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 64]
+            [['name'], 'string', 'max' => 64],
         ];
     }
 
@@ -80,9 +72,9 @@ class Product extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',
-            'cover_id' => 'Обложка',
-            'paper_id' => 'Бумага',
-            'language_id' => 'Язык',
+            'cover' => 'Обложка',
+            'pape' => 'Бумага',
+            'language' => 'Язык',
         ];
     }
 
@@ -124,25 +116,25 @@ class Product extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProdProductHasCover()
+    public function getProductHasCover()
     {
-        return $this->hasOne(ProdProductHasCover::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductHasCover::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProdProductHasLanguage()
+    public function getProductHasLanguage()
     {
-        return $this->hasOne(ProdProductHasLanguage::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductHasLanguage::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProdProductHasPaper()
+    public function getProductHasPaper()
     {
-        return $this->hasOne(ProdProductHasPaper::className(), ['product_id' => 'id']);
+        return $this->hasOne(ProductHasPaper::className(), ['product_id' => 'id']);
     }
     
     /**
@@ -152,7 +144,7 @@ class Product extends \yii\db\ActiveRecord
     public function dropDownListCategories()
     {
         $models = Category::find()->all();
-        $items = ArrayHelper::map($models,'id','name');
+        $items = ArrayHelper::map($models, 'id', 'name');
         $options = [
             'prompt' => 'Виберите категорию...'
         ];
@@ -167,7 +159,7 @@ class Product extends \yii\db\ActiveRecord
     public function dropDownListCovers()
     {
         $models = Cover::find()->all();
-        $items = ArrayHelper::map($models,'id','name');
+        $items = ArrayHelper::map($models, 'id', 'name');
         $options = [
             'prompt' => 'Виберите обложку...'
         ];
@@ -182,7 +174,7 @@ class Product extends \yii\db\ActiveRecord
     public function dropDownListPapers()
     {
         $models = Paper::find()->all();
-        $items = ArrayHelper::map($models,'id','name');
+        $items = ArrayHelper::map($models, 'id', 'name');
         $options = [
             'prompt' => 'Виберите бумагу...'
         ];
@@ -197,7 +189,7 @@ class Product extends \yii\db\ActiveRecord
     public function dropDownListLanguages()
     {
         $models = Language::find()->all();
-        $items = ArrayHelper::map($models,'id','name');
+        $items = ArrayHelper::map($models, 'id', 'name');
         $options = [
             'prompt' => 'Виберите язык...'
         ];

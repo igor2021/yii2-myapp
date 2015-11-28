@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * ProductsController implements the CRUD actions for Product model.
@@ -91,7 +92,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasCover();
                     $has_model->product_id = $model->id;
-                    $has_model->cover_id = $post['Product']['cover_id'];
+                    $has_model->cover_id = $post['Product']['cover'];
                     $has_model->save();
                 } while(0);
                 // ProductHasPaper
@@ -99,7 +100,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasPaper();
                     $has_model->product_id = $model->id;
-                    $has_model->paper_id = $post['Product']['paper_id'];
+                    $has_model->paper_id = $post['Product']['paper'];
                     $has_model->save();
                 } while(0);
                 // ProductHasLanguage
@@ -107,7 +108,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasLanguage();
                     $has_model->product_id = $model->id;
-                    $has_model->language_id = $post['Product']['language_id'];
+                    $has_model->language_id = $post['Product']['language'];
                     $has_model->save();
                 } while(0);
                 
@@ -146,7 +147,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasCover();
                     $has_model->product_id = $model->id;
-                    $has_model->cover_id = $post['Product']['cover_id'];
+                    $has_model->cover_id = $post['Product']['cover'];
                     $has_model->save();
                 } while(0);
                 // ProductHasPaper
@@ -154,7 +155,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasPaper();
                     $has_model->product_id = $model->id;
-                    $has_model->paper_id = $post['Product']['paper_id'];
+                    $has_model->paper_id = $post['Product']['paper'];
                     $has_model->save();
                 } while(0);
                 // ProductHasLanguage
@@ -162,7 +163,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $has_model = new ProductHasLanguage();
                     $has_model->product_id = $model->id;
-                    $has_model->language_id = $post['Product']['language_id'];
+                    $has_model->language_id = $post['Product']['language'];
                     $has_model->save();
                 } while(0);
         
@@ -173,10 +174,9 @@ class ProductsController extends Controller
             
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            /* Get vars for relation & Set them in current model */
-            $model->cover_id = $model->productHasCover->id;
-            $model->paper_id = $model->productHasPaper->id;
-            $model->language_id = $model->productHasLanguage->id;
+            
+            //VarDumper::dump($model,10,1);
+            //die;
             
             return $this->render('update', [
                 'model' => $model,
