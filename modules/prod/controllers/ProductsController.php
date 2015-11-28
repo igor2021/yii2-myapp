@@ -143,7 +143,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $prop_model = new ProductHasCover();
                     $prop_model->product_id = $model->id;
-                    $prop_model->cover_id = $post['ProductRecord']['cover_id'];
+                    $prop_model->cover_id = $post['Product']['cover_id'];
                     $prop_model->save();
                 } while(0);
                 // ProductHasPaper
@@ -151,7 +151,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $prop_model = new ProductHasPaper();
                     $prop_model->product_id = $model->id;
-                    $prop_model->paper_id = $post['ProductRecord']['paper_id'];
+                    $prop_model->paper_id = $post['Product']['paper_id'];
                     $prop_model->save();
                 } while(0);
                 // ProductHasLanguage
@@ -159,7 +159,7 @@ class ProductsController extends Controller
                     $post = Yii::$app->request->post();
                     $prop_model = new ProductHasLanguage();
                     $prop_model->product_id = $model->id;
-                    $prop_model->language_id = $post['ProductRecord']['language_id'];
+                    $prop_model->language_id = $post['Product']['language_id'];
                     $prop_model->save();
                 } while(0);
         
