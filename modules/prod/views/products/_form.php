@@ -14,6 +14,8 @@ use modules\prod\models\Product;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php 
+        var_dump($model);
+        die;
         $params = Product::dropDownListCategories();
         echo $form->field($model, 'category_id')->dropDownList($params['items'], $params['options']);
     ?>

@@ -16,13 +16,13 @@ use yii\widgets\ActiveField;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property ProdCategory $category
- * @property ProdCover $cover
- * @property ProdPaper $paper
- * @property ProdLanguage $language
- * @property ProdProductHasCover $prodProductHasCover
- * @property ProdProductHasLanguage $prodProductHasLanguage
- * @property ProdProductHasPaper $prodProductHasPaper
+ * @property Category $category
+ * @property Cover $cover
+ * @property Paper $paper
+ * @property Language $language
+ * @property ProductHasCover $prodProductHasCover
+ * @property ProductHasLanguage $prodProductHasLanguage
+ * @property ProductHasPaper $prodProductHasPaper
  */
 class Product extends \yii\db\ActiveRecord
 {

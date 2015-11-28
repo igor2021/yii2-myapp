@@ -89,26 +89,26 @@ class ProductsController extends Controller
                 // ProductHasCover
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasCover();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->cover_id = $post['Product']['cover_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasCover();
+                    $has_model->product_id = $model->id;
+                    $has_model->cover_id = $post['Product']['cover_id'];
+                    $has_model->save();
                 } while(0);
                 // ProductHasPaper
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasPaper();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->paper_id = $post['Product']['paper_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasPaper();
+                    $has_model->product_id = $model->id;
+                    $has_model->paper_id = $post['Product']['paper_id'];
+                    $has_model->save();
                 } while(0);
                 // ProductHasLanguage
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasLanguage();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->language_id = $post['Product']['language_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasLanguage();
+                    $has_model->product_id = $model->id;
+                    $has_model->language_id = $post['Product']['language_id'];
+                    $has_model->save();
                 } while(0);
                 
                 $transaction->commit();
@@ -140,30 +140,30 @@ class ProductsController extends Controller
             try {
                 // Product
                 $model->save();
-        
+            
                 // ProductHasCover
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasCover();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->cover_id = $post['Product']['cover_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasCover();
+                    $has_model->product_id = $model->id;
+                    $has_model->cover_id = $post['Product']['cover_id'];
+                    $has_model->save();
                 } while(0);
                 // ProductHasPaper
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasPaper();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->paper_id = $post['Product']['paper_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasPaper();
+                    $has_model->product_id = $model->id;
+                    $has_model->paper_id = $post['Product']['paper_id'];
+                    $has_model->save();
                 } while(0);
                 // ProductHasLanguage
                 do {
                     $post = Yii::$app->request->post();
-                    $prop_model = new ProductHasLanguage();
-                    $prop_model->product_id = $model->id;
-                    $prop_model->language_id = $post['Product']['language_id'];
-                    $prop_model->save();
+                    $has_model = new ProductHasLanguage();
+                    $has_model->product_id = $model->id;
+                    $has_model->language_id = $post['Product']['language_id'];
+                    $has_model->save();
                 } while(0);
         
                 $transaction->commit();
@@ -173,6 +173,11 @@ class ProductsController extends Controller
             
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            /* Get vars for relation & Set them in current model */
+            $model->cover_id = $model->productHasCover->id;
+            $model->paper_id = $model->productHasPaper->id;
+            $model->language_id = $model->productHasLanguage->id;
+            
             return $this->render('update', [
                 'model' => $model,
             ]);
