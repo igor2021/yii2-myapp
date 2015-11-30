@@ -44,6 +44,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'timestamp' => \yii\behaviors\TimestampBehavior::className(),
+            'blame' => \yii\behaviors\BlameableBehavior::className()
         ];
     }
     
