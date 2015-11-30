@@ -87,7 +87,7 @@ Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
 ./yii migrate --migrationPath=@modules/prod/migrations
 ```
 
-## 4.5. Прочие миграции
+## 5.2. Прочие миграции
 
 
 ```
